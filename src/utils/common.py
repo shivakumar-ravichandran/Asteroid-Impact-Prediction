@@ -5,6 +5,7 @@ from ensure import ensure_annotations
 from pathlib import Path
 import yaml
 import os
+import pickle
 
 
 class CommonUtils:
@@ -42,3 +43,16 @@ class CommonUtils:
         """
         for path in path_to_directories:
             os.makedirs(path, exist_ok=True)
+
+    @staticmethod
+    def save_object(file_path, file_name, obj):
+        try:
+            os.makedirs(file_path, exist_ok=True)
+
+            file = os.path.join(file_path, file_name)
+
+            with open(file, "wb") as file_obj:
+                pickle.dump(obj, file_obj)
+
+        except Exception as exp:
+            raise CustomException(exp, sys)

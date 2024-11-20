@@ -1,7 +1,11 @@
 from pathlib import Path
 from src.constants import *
 from src.utils.common import CommonUtils
-from src.entity.config_entity import DataIngestionConfig
+from src.entity.config_entity import (
+    DataIngestionConfig,
+    SaveModelConfig,
+    DataTransformConfig,
+)
 
 
 class ConfigurationManager:
@@ -35,3 +39,29 @@ class ConfigurationManager:
         )
 
         return data_ingestion_config
+
+    def get_model_transformer_config(self) -> DataTransformConfig:
+        config = self.config.data_transform
+
+        # Create root directory to save preprocessor as specified in config.yaml
+        CommonUtils.create_directories([config.root_dir])
+
+        data_transformer_config = DataTransformConfig(
+            root_dir=config.root_dir,
+            file_name=config.file_name,
+        )
+
+        return data_transformer_config
+
+    def get_save_model_config(self) -> SaveModelConfig:
+        config = self.config.save_model
+
+        # Create root directory to save model as specified in config.yaml
+        CommonUtils.create_directories([config.root_dir])
+
+        save_model_config = SaveModelConfig(
+            root_dir=config.root_dir,
+            file_name=config.file_name,
+        )
+
+        return save_model_config
